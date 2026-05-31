@@ -1,5 +1,6 @@
 import React from 'react';
 import prisma from '@/lib/prisma';
+import { Monitor, PingLog } from '@prisma/client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -17,6 +18,10 @@ import {
   Trash2, 
   Clock 
 } from 'lucide-react';
+
+type MonitorWithLogs = Monitor & {
+  pingLogs: PingLog[];
+};
 
 // Force dynamic rendering to always query fresh data from the database
 export const dynamic = 'force-dynamic';
@@ -36,8 +41,8 @@ export default async function Home() {
 
   // Calculate statistics
   const totalMonitors = monitors.length;
-  const serversUp = monitors.filter((m: any) => m.status === 'UP').length;
-  const serversDown = monitors.filter((m: any) => m.status === 'DOWN').length;
+  const serversUp = monitors.filter((m: Monitor) => m.status === 'UP').length;
+  const serversDown = monitors.filter((m: Monitor) => m.status === 'DOWN').length;
 
   return (
     <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-950/50 pb-16 font-sans">
@@ -130,7 +135,7 @@ export default async function Home() {
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {monitors.map((monitor) => {
+              {monitors.map((monitor: MonitorWithLogs) => {
                 const lastLog = monitor.pingLogs[0];
                 const lastChecked = lastLog 
                   ? new Date(lastLog.checkedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) 
