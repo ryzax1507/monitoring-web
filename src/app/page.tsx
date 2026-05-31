@@ -23,7 +23,7 @@ type MonitorWithLogs = Monitor & {
   pingLogs: PingLog[];
 };
 
-// Force dynamic rendering to always query fresh data from the database
+// Force dynamic rendering to always query fresh data from the database (trigger vercel rebuild)
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
