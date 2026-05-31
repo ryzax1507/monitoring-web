@@ -36,8 +36,8 @@ export default async function Home() {
 
   // Calculate statistics
   const totalMonitors = monitors.length;
-  const serversUp = monitors.filter((m) => m.status === 'UP').length;
-  const serversDown = monitors.filter((m) => m.status === 'DOWN').length;
+  const serversUp = monitors.filter((m: any) => m.status === 'UP').length;
+  const serversDown = monitors.filter((m: any) => m.status === 'DOWN').length;
 
   return (
     <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-950/50 pb-16 font-sans">
