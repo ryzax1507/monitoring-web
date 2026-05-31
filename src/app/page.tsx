@@ -1,6 +1,5 @@
 import React from 'react';
 import prisma from '@/lib/prisma';
-import { Monitor, PingLog } from '@prisma/client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -19,9 +18,26 @@ import {
   Clock 
 } from 'lucide-react';
 
-type MonitorWithLogs = Monitor & {
+interface PingLog {
+  id: string;
+  monitorId: string;
+  statusCode: number | null;
+  latency: number;
+  isUp: boolean;
+  checkedAt: Date;
+}
+
+interface Monitor {
+  id: string;
+  name: string;
+  url: string;
+  status: string;
+  sslDaysRemaining: number | null;
+  createdAt: Date;
   pingLogs: PingLog[];
-};
+}
+
+type MonitorWithLogs = Monitor;
 
 // Force dynamic rendering to always query fresh data from the database (trigger vercel rebuild)
 export const dynamic = 'force-dynamic';
